@@ -1,0 +1,128 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Класс, представляющий студента
+class Student {
+    private String name;
+    private boolean[] tasks = new boolean[3];
+
+    public Student(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean getTask(int index) {
+        return tasks[index];
+    }
+
+    public void setTask(int index, boolean completed) {
+        tasks[index] = completed;
+    }
+}
+
+// Класс, представляющий группу студентов
+class Group {
+    private String name;
+    private List<Student> students;
+
+    public Group(String name) {
+        this.name = name;
+        this.students = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    public void removeStudent(Student student) {
+        students.remove(student);
+    }
+}
+
+// Класс, реализующий основные функции приложения
+class InformaticsApp {
+    private List<Group> groups;
+
+    public InformaticsApp() {
+        this.groups = new ArrayList<>();
+    }
+
+    public void createGroup(String name) {
+        groups.add(new Group(name));
+    }
+
+    public void deleteGroup(Group group) {
+        groups.remove(group);
+    }
+
+    public void addStudentToGroup(Group group, Student student) {
+        group.addStudent(student);
+    }
+
+    public void removeStudentFromGroup(Group group, Student student) {
+        group.removeStudent(student);
+    }
+
+    public void markTaskCompleted(Student student, int taskIndex, boolean completed) {
+        student.setTask(taskIndex, completed);
+    }
+
+    public void printGroupInfo(Group group) {
+        System.out.println("Group: " + group.getName());
+        for (Student student : group.getStudents()) {
+            System.out.println("Student: " + student.getName());
+            for (int i = 0; i < 3; i++) {
+                System.out.println("Task " + (i + 1) + ": " + (student.getTask(i) ? "Completed" : "Not completed"));
+            }
+        }
+    }
+}
+
+// Пример использования
+public class Main {
+    public static void main(String[] args) {
+        InformaticsApp app = new InformaticsApp();
+
+        // Создание групп
+        app.createGroup("Group A");
+        app.createGroup("Group B");
+
+        // Создание студентов и добавление их в группы
+        Student student1 = new Student("John");
+        Student student2 = new Student("Jane");
+        Student student3 = new Student("Bob");
+
+        app.addStudentToGroup(app.groups.get(0), student1);
+        app.addStudentToGroup(app.groups.get(0), student2);
+        app.addStudentToGroup(app.groups.get(1), student3);
+
+        // Отметка выполненных задач
+        app.markTaskCompleted(student1, 0, true);
+        app.markTaskCompleted(student1, 1, false);
+        app.markTaskCompleted(student1, 2, true);
+
+        app.markTaskCompleted(student2, 0, true);
+        app.markTaskCompleted(student2, 1, true);
+        app.markTaskCompleted(student2, 2, false);
+
+        app.markTaskCompleted(student3, 0, false);
+        app.markTaskCompleted(student3, 1, true);
+        app.markTaskCompleted(student3, 2, true);
+
+        // Вывод информации о группах
+        app.printGroupInfo(app.groups.get(0));
+        System.out.println();
+        app.printGroupInfo(app.groups.get(1));
+    }
+}
